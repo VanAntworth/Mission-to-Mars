@@ -134,7 +134,7 @@ df.to_html()
 
 # ### Hemispheres
 
-# In[20]:
+# In[16]:
 
 
 # 1. Use browser to visit the URL 
@@ -143,7 +143,7 @@ url = 'https://marshemispheres.com/'
 browser.visit(url)
 
 
-# In[21]:
+# In[17]:
 
 
 # 2. Create a list to hold the images and titles.
@@ -163,18 +163,57 @@ for i in range(4):
     browser.back()
 
 
-# In[22]:
+# In[18]:
 
 
 # 4. Print the list that holds the dictionary of each image url and title.
-hemisphere_image_urls
 
 
-# In[23]:
+# In[19]:
+
+
+# Use browser to visit the URL
+url = 'https://marshemispheres.com/'
+browser.visit(url)
+# Parse the resulting html with soup
+html = browser.html
+img_soup = soup(html, 'html.parser')
+
+# 2. Create a list to hold the images and titles.
+hemisphere_image_urls = []
+
+# 3. Write code to retrieve the image urls and titles for each hemisphere.
+links = browser.find_by_css('a.product-item img')
+
+for i in range(len(links)):
+    hemispheres = {}
+
+    # Find elements going to click link.
+    browser.find_by_css('.description > a.product-item h3')[i].click()
+
+    # Find sample image link
+    element = browser.find_link_by_text('Sample').first
+
+    # Get hemisphere Title
+    img_url = element['href']
+
+    title = browser.find_by_css("h2.title").text
+    # Get hemisphere Title
+    hemispheres["title"] = title
+    #hemispheres['title'] = browser.find_by_css('h2.title').text
+
+    # Add Objects to hemisphere_image_urls list
+    hemispheres["img_url"] = img_url
+    hemisphere_image_urls.append(hemispheres)
+    
+    browser.back()
+
+
+# In[20]:
 
 
 # 5. Quit the browser
-browser.quit()
+#browser.quit()
 
 
 # In[ ]:
